@@ -4,7 +4,7 @@
 // and adding support for 1xx,2xx,3xx,4xx,Qxx,Rxx - pitch slide and vibrato
 // and duty cycle envelopes
 //
-//
+// some changes marked with v50
 
 #include "stdafx.h"
 

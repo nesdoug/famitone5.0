@@ -1,6 +1,6 @@
 text2vol5, replaces text2data
 nsf2data5, replaces nsf2data
-Doug Fraker, 9-17-2018, unofficial update, nesdoug.com
+Doug Fraker, 4-18-2019, unofficial update, nesdoug.com
 
 
 additions so far:
@@ -25,24 +25,40 @@ usage notes:
 	-should use with famitracker 0.4.6 (or later) text export
 	-use volume column for Square 1, Square 2, and Noise Channels
 	-at the start of a song, the volume column is assumed to be 'f'
-	-if you loop backwards, use a volume column entry for the first note at the loop point, or else it will carry over whatever volume is still loaded
-Example - at the start of the loop, you fail to put a volume column entry, but at the end of the loop, you fade out to zero. When it loops backwards, the volume will still be set to zero.
+	-if you loop backwards, use a volume column entry for the first note at the 
+	 loop point, or else it will carry over whatever volume is still loaded
+	Example - at the start of the loop, you fail to put a volume column entry, 
+	 but at the end of the loop, you fade out to zero. When it loops backwards, 
+	the volume will still be set to zero.
 	-use any note for Square 1 + 2, Triangle, or Noise Channel
 	-restrict DPCM to C-1 to D-6
 	-pal support has been removed. only the ntsc note table remains.
 
 
 added features:
-	-use the command line -allin to ensure all instruments are output, even if no song uses it. this may come in handy if you have too many songs and need to split the famitracker file into 2 parts.
-	-the song titles will appear in comments in the asm data. This may come in handy if you need to cut or move 1 song for space reasons.
+	-use the command line -allin to ensure all instruments are output, even if 
+	 no song uses it. this may come in handy if you have too many songs and need 
+	 to split the famitracker file into 2 parts.
+	-the song titles will appear in comments in the asm data. This may come in 
+	 handy if you need to cut or move 1 song for space reasons.
 
-Support for 1xx,2xx,3xx,4xx,Qxx,Rxx effects. They apply to the Square and Triangle channels. Use 100,200,or 300 to disable the pitch bend. Use 400 to disable to vibrato. The vibrato speed (4xy where x is speed) is permanently set to 6. I recommend that you write all the vibrato effects like 461 462 463, etc. "a" (like 46a) is the maximum depth.
+Support for 1xx,2xx,3xx,4xx,Qxx,Rxx effects. They apply to the Square and Triangle 
+channels. Use 100,200,or 300 to disable the pitch bend. Use 400 to disable to vibrato. 
+The vibrato speed (4xy where x is speed) is permanently set to 6. I recommend that you 
+write all the vibrato effects like 461 462 463, etc. "a" (like 46a) is the maximum depth.
 
 	Don't mix 1xx,2xx,3xx,Qxx,Rxx effects with arpeggio or pitch envelopes.
 
-You can put a 1xx(2xx) and 4xx effect at the same time on a note, but not on the same line...only 1 fx column is allowed(per channel), so 1xx(2xx) on the first line and 4xx on the line below that.
+You can put a 1xx(2xx) and 4xx effect at the same time on a note, but not on the same 
+line...only 1 fx column is allowed(per channel), so 1xx(2xx) on the first line and 4xx 
+on the line below that.
 
-	There is no range check for Qxx or Rxx effects. The code assumes that you, the musician, would not tell it to bend up to a note that doesn't exist.
+	There is no range check for Qxx or Rxx effects. The code assumes that you, the 
+musician, would not tell it to bend up to a note that doesn't exist.
+
+	At line 318, I added 2 lines that should increase the volume of the triangle
+channel (if you don't use DPCM samples). If this is too loud, edit the LDA as the
+comments suggest.
 	
 	
 	
