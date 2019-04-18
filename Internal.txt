@@ -1,0 +1,25 @@
+
+
+Internal codes
+00 = note cut
+1-58? = notes
+5f = end any 1xx,2xx,3xx slide (doesn't need a parameter)
+60-6a = 4xx vib, stuck at rate 8 (or 6)
+6b = 1xx pitch up, followed by speed
+6c = 2xx pitch down, followed by speed
+6d = 3xx portamento, followed by speed
+6e = Qxx
+6f = Rxx 
+70-7f = vol
+80+ = mixed, new instruments or wait (in rows) till next command
+fb set new song speed (fxx)
+fd jump to loop back point
+ff play x bytes from a reference point
+
+
+
+
+
+-don't use arpeggio or pitch envelopes at the same time as 1xx,2xx,3xx,Rxx,
+ or Qxx effects. It won't work the same as famitracker.
+

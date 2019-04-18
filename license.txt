@@ -1,0 +1,9 @@
+The library is open source and released into the Public Domain. You can 
+use it for any purpose without restrictions: redistribute, modify, use 
+for commercial and non-commercial projects. You may credit the author, 
+inform the author about your project, donate, etc, but nothing is 
+obligatory, you could do it at free will. Obviously, the library 
+provided AS IS without warranties of any kind, the author is not 
+responsible for anything.
+
+As stated in Shiru's original readme.txt file.

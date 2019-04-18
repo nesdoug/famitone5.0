@@ -1,0 +1,5 @@
+Programmer humility
+
+I ran about 50 tests on this and I found bugs. All the different combinations of 1,2,3,4,Q,R effects were difficult to account for. I wrote some last minute bug fixes that are ugly/clunky. It seems to run smoothly now, but the code could use some rewriting, both for efficiency and size, but also for clarity. This will probably take me quite a while, if at all, due to my busy schedule.
+ 
+It does pass all my tests, so I consider it finished enough for release.
