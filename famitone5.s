@@ -1,7 +1,7 @@
-;FamiTone5.0 unofficial
+;FamiTone5.1 unofficial
 ;fork of Famitone2 v1.15 by Shiru 04'17
 ;for ca65
-;Revision 4-18-2019, Doug Fraker, to be used with text2vol5
+;Revision 6-22-2019, Doug Fraker, to be used with text2vol5
 ;added volume column and support for all NES notes
 ;added support for 1xx,2xx,3xx,4xx,Qxx,Rxx effects
 ;added support for duty envelopes and sound fx > 256 bytes

@@ -1,6 +1,6 @@
 ﻿FamiTone2 audio library v1.15 by Shiru 04'17
 
-(original readme, does not reflect changes. See 'usage')
+(original readme, does not reflect changes. See 'Usage.txt')
 
 
 

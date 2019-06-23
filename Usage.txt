@@ -1,6 +1,6 @@
 text2vol5, replaces text2data
 nsf2data5, replaces nsf2data
-Doug Fraker, 4-18-2019, unofficial update, nesdoug.com
+Doug Fraker, ver 5.1 6-22-2019, unofficial update, nesdoug.com
 
 
 additions so far:

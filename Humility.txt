@@ -7,3 +7,5 @@ some rewriting, both for efficiency and size, but also for clarity. This will
 probably take me quite a while, if at all, due to my busy schedule.
  
 It does pass all my tests, so I consider it finished enough for release.
+
+But, it probably has bugs. 
