@@ -33,6 +33,8 @@ usage notes:
 	-use any note for Square 1 + 2, Triangle, or Noise Channel
 	-restrict DPCM to C-1 to D-6
 	-pal support has been removed. only the ntsc note table remains.
+	(see the PAL folder, where it has been restored)
+	-make sure you don't put game variables where the famitone variables are
 
 
 added features:
