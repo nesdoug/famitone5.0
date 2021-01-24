@@ -1,0 +1,40 @@
+; initial code
+
+; ca65 or asm6 -----------------
+
+; set music data pointer
+	ldx #<music_data ;low
+   	ldy #>music_data ;high
+	lda #1 ;NTSC = 1, PAL = 0
+	jsr FamiToneInit
+	
+; set sound effects data pointer
+	ldx #<sounds
+	ldy #>sounds
+	jsr FamiToneSfxInit
+	
+; play song #0
+	lda #0 
+	jsr FamiToneMusicPlay
+	
+
+;nesasm	-------------------------
+
+; set music data pointer
+	ldx #LOW(music_data) ;low
+   	ldy #HIGH(music_data) ;high
+	lda #1 ;NTSC = 1, PAL = 0
+	jsr FamiToneInit
+
+; set sound effects data pointer	
+	ldx #LOW(sounds)
+	ldy #HIGH(sounds)	
+	jsr FamiToneSfxInit
+	
+; play song #0
+	lda #0
+	jsr FamiToneMusicPlay
+	
+	
+	
+	

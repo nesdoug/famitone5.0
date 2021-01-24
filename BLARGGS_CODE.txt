@@ -1,0 +1,40 @@
+;to determine if the system is ntsc or pal
+
+
+	lda #%10000000
+	sta PPU_CTRL		;enable NMI
+
+
+waitSync3:				;wait for V-BLANK
+	lda <FRAME_CNT1
+@1:
+	cmp <FRAME_CNT1
+	beq @1
+
+detectNTSC:
+	ldx #52				;blargg's code
+	ldy #24				;a timed loop
+@1:
+	dex
+	bne @1
+	dey
+	bne @1
+
+	lda PPU_STATUS
+	and #$80
+	sta <NTSC_MODE
+	
+	
+;if PAL NES, the long NMI means that it won't have run into
+;then next frame's NMI yet and PPU_STATUS bit 7 will be zero
+;but NTSC will have run into the next frame's NMI
+
+;the nmi code should do this...
+
+	inc <FRAME_CNT1
+	
+	
+;this NTSC_MODE variable is loaded to A register before
+;calling the FamiToneInit, to set PAL vs NTSC mode
+
+
