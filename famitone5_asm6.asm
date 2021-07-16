@@ -764,19 +764,19 @@ update_sound:
 	lda #0
 @ch1sign:
 	adc _FT2NoteTableMSB,x
-
-	.ifndef FT_SFX_ENABLE
-	cmp FT_PULSE1_PREV
-	beq @ch1prev
-	sta FT_PULSE1_PREV
-	.endif
-
 	sta temp_high	; FT_MR_PULSE1_H
-@ch1prev:
 		ldy #0 ;for sq 1	;  
 		jsr Apply_Effects	;  
 		sta FT_MR_PULSE1_L	;   a = temp_low
+
+		.ifndef FT_SFX_ENABLE
+		cpx FT_PULSE1_PREV
+		beq @ch1prev
+		stx FT_PULSE1_PREV
+		.endif
+
 		stx FT_MR_PULSE1_H	;   x = temp_high
+@ch1prev:
 	lda FT_CH1_VOLUME
 		;  
 		beq ch1cut ;if zero, skip multiply
@@ -820,19 +820,19 @@ ch1cut:
 	lda #0
 @ch2sign:
 	adc _FT2NoteTableMSB,x
-
-	.ifndef FT_SFX_ENABLE
-	cmp FT_PULSE2_PREV
-	beq @ch2prev
-	sta FT_PULSE2_PREV
-	.endif
-
 	sta temp_high 	;   FT_MR_PULSE2_H
-@ch2prev:
 		ldy #1 ;for sq 2	;  
 		jsr Apply_Effects	;  
 		sta FT_MR_PULSE2_L	;   a = temp_low
+
+		.ifndef FT_SFX_ENABLE
+		cpx FT_PULSE2_PREV
+		beq @ch2prev
+		stx FT_PULSE2_PREV
+		.endif
+
 		stx FT_MR_PULSE2_H	;   x = temp_high
+@ch2prev:
 	lda FT_CH2_VOLUME
 		;  
 		beq ch2cut ;if zero, skip multiply
