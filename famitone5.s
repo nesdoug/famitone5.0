@@ -1,4 +1,4 @@
-;FamiTone5.2021 unofficial
+;FamiTone5.2021.Nov
 ;fork of Famitone2 v1.15 by Shiru 04'17
 ;for ca65
 ;Revision 1-21-2021, Doug Fraker, to be used with text2vol5
@@ -6,9 +6,11 @@
 ;added support for 1xx,2xx,3xx,4xx,Qxx,Rxx effects
 ;added support for duty envelopes and sound fx > 256 bytes
 ;Pal support fixed, volume table exact now
+;Nov 2021, fixed bug, disabling FT_SFX_ENABLE was broken
 
 
-.export FamiToneInit, FamiToneMusicPlay, FamiToneSfxPlay, FamiToneSfxInit, FamiToneUpdate
+
+.export FamiToneInit, FamiToneMusicPlay, FamiToneUpdate
 
 
 
@@ -76,6 +78,9 @@ FT_THREAD		= 1		;undefine if you are calling sound effects from the same thread 
 FT_PAL_SUPPORT	= 1			;undefine to exclude PAL support
 FT_NTSC_SUPPORT	= 1			;undefine to exclude NTSC support
 
+	.if(FT_SFX_ENABLE)
+.export FamiToneSfxPlay, FamiToneSfxInit
+	.endif
 
 
 ;internal defines
@@ -251,19 +256,19 @@ APU_SND_CHN		= $4015
 
 ;aliases for the APU registers in the output buffer
 
-	.if(!FT_SFX_ENABLE)				;if sound effects are disabled, write to the APU directly
-FT_MR_PULSE1_V		= APU_PL1_VOL
-FT_MR_PULSE1_L		= APU_PL1_LO
-FT_MR_PULSE1_H		= APU_PL1_HI
-FT_MR_PULSE2_V		= APU_PL2_VOL
-FT_MR_PULSE2_L		= APU_PL2_LO
-FT_MR_PULSE2_H		= APU_PL2_HI
-FT_MR_TRI_V			= APU_TRI_LINEAR
-FT_MR_TRI_L			= APU_TRI_LO
-FT_MR_TRI_H			= APU_TRI_HI
-FT_MR_NOISE_V		= APU_NOISE_VOL
-FT_MR_NOISE_F		= APU_NOISE_LO
-	.else								;otherwise write to the output buffer
+;	.if(!FT_SFX_ENABLE)				;if sound effects are disabled, write to the APU directly
+;FT_MR_PULSE1_V		= APU_PL1_VOL
+;FT_MR_PULSE1_L		= APU_PL1_LO
+;FT_MR_PULSE1_H		= APU_PL1_HI
+;FT_MR_PULSE2_V		= APU_PL2_VOL
+;FT_MR_PULSE2_L		= APU_PL2_LO
+;FT_MR_PULSE2_H		= APU_PL2_HI
+;FT_MR_TRI_V			= APU_TRI_LINEAR
+;FT_MR_TRI_L			= APU_TRI_LO
+;FT_MR_TRI_H			= APU_TRI_HI
+;FT_MR_NOISE_V		= APU_NOISE_VOL
+;FT_MR_NOISE_F		= APU_NOISE_LO
+;	.else								;otherwise write to the output buffer
 FT_MR_PULSE1_V		= FT_OUT_BUF
 FT_MR_PULSE1_L		= FT_OUT_BUF+1
 FT_MR_PULSE1_H		= FT_OUT_BUF+2
@@ -275,7 +280,7 @@ FT_MR_TRI_L			= FT_OUT_BUF+7
 FT_MR_TRI_H			= FT_OUT_BUF+8
 FT_MR_NOISE_V		= FT_OUT_BUF+9
 FT_MR_NOISE_F		= FT_OUT_BUF+10
-	.endif
+;	.endif
 
 
 
@@ -769,11 +774,11 @@ update_sound:
 @ch1sign:
 	adc _FT2NoteTableMSB,x
 
-	.if(!FT_SFX_ENABLE)
-	cmp FT_PULSE1_PREV
-	beq @ch1prev
-	sta FT_PULSE1_PREV
-	.endif
+;	.if(!FT_SFX_ENABLE)
+;	cmp FT_PULSE1_PREV
+;	beq @ch1prev
+;	sta FT_PULSE1_PREV
+;	.endif
 
 	sta temp_high	; FT_MR_PULSE1_H
 @ch1prev:
@@ -825,11 +830,11 @@ ch1cut:
 @ch2sign:
 	adc _FT2NoteTableMSB,x
 
-	.if(!FT_SFX_ENABLE)
-	cmp FT_PULSE2_PREV
-	beq @ch2prev
-	sta FT_PULSE2_PREV
-	.endif
+;	.if(!FT_SFX_ENABLE)
+;	cmp FT_PULSE2_PREV
+;	beq @ch2prev
+;	sta FT_PULSE2_PREV
+;	.endif
 
 	sta temp_high 	;   FT_MR_PULSE2_H
 @ch2prev:
@@ -936,6 +941,8 @@ ch4cut:
 	ldx #FT_SFX_CH3
 	jsr _FT2SfxUpdate
 	.endif
+;FT_SFX_ENABLE
+	.endif
 
 
 	;send data from the output buffer to the APU
@@ -974,7 +981,7 @@ ch4cut:
 	lda FT_OUT_BUF+10	;noise period
 	sta APU_NOISE_LO
 
-	.endif
+;	.endif
 
 	.if(FT_THREAD)
 	pla
