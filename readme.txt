@@ -1,6 +1,14 @@
-text2vol5, replaces text2data
+update - 3/11/2022
+-now compatible with 0cc-Famitracker and Dn-Famitracker
+-fixed a bug in text2vol5 (undefined behavior) 
+ that might have caused incorrect output
+-in famitone asm, made variables contiguous 
+ 
+
+famitone 5 (unofficial)
+text2vol5, replaces text2data from famitone2
 nsf2data5, replaces nsf2data
-Doug Fraker, ver 5.2021, unofficial update, nesdoug.com
+doug fraker, nesdoug.com
 
 
 additions so far:
@@ -56,9 +64,7 @@ on the line below that.
 	There is no range check for Qxx or Rxx effects. The code assumes that you, the 
 musician, would not tell it to bend up to a note that doesn't exist.
 
-	At line 318, I added 2 lines that should increase the volume of the triangle
-channel (if you don't use DPCM samples). If this is too loud, edit the LDA as the
-comments suggest.
+
 	
 	
 	
@@ -92,9 +98,10 @@ Sound Fx aren't working? Possible reasons...
 
 -you are calling a sfx # too high. The first sfx is 0, not 1
 
--you are calling a sfx channel too high
-FT_SFX_STREAMS	= 1 means that x should be #0 when calling a sfx
+-you are calling a sfx channel with the wrong value
+FT_SFX_STREAMS	= 1...4 
 LDX #channel, LDA #which_sfx, JSR FamiToneSfxPlay
+but X should have a value 0,15,30, or 45
 
 -forgot to turn on sfx... FT_SFX_ENABLE shouldn't be commented out
 

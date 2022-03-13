@@ -1,4 +1,4 @@
-;FamiTone5.2021.Nov
+;FamiTone5.2022.Mar.12
 ;fork of Famitone2 v1.15 by Shiru 04'17
 ;for asm6
 ;Revision 1-21-2021, Doug Fraker, to be used with text2vol5
@@ -7,55 +7,16 @@
 ;added support for duty envelopes and sound fx > 256 bytes
 ;Pal support fixed, volume table exact now
 ;Nov 2021, fixed bug, disabling FT_SFX_ENABLE was broken
+;2022.Mar.12 moved variables to be contiguous
 
 
 
 
 
-enum $03e0
+;variables moved below
 
-volume_Sq1 	.db 0
-volume_Sq2 	.db 0	
-volume_Nz 	.db 0	
-vol_change 	.db 0	
-multiple1 	.db 0	
-;multiple2 	.db 0	
-
-vibrato_depth1 	.db 0 ;zero = off
-vibrato_depth2 	.db 0
-vibrato_depth3 	.db 0
-vibrato_count 	.db 0 ;goes up every frame, shared by all
-
-slide_mode1  .db 0 ;0 = off, 1 = up, 2 = down, 3 = portamento, 4 q/r
-slide_mode2  .db 0
-slide_mode3  .db 0
-slide_speed1 	.db 0 ;how much each frame, zero = off
-slide_speed2 	.db 0
-slide_speed3 	.db 0
-slide_count_low1 	.db 0 ;how much to add / subtract from low byte - cumulative
-slide_count_low2 	.db 0
-slide_count_low3 	.db 0
-slide_count_high1 	.db 0 ; how much to add / subtract from high byte
-slide_count_high2 	.db 0
-slide_count_high3 	.db 0
-
-temp_low 		.db 0 ;low byte of frequency
-temp_high 		.db 0
-channel 		.db 0 
-
-temp_duty 		.db 0
-qr_flag 		.db 0
-qr_offset 		.db 0
-qr_rate 		.db 0
-zero_flag1 		.db 0 ;for remembering if 100,200,300
-zero_flag2 		.db 0
-zero_flag3		.db 0 ;31 new variables
-
-ende
 
 MAX_NOTE = 88
-
-
 
 
 ;settings, uncomment or put them into your main program; the latter makes possible updates easier
@@ -220,6 +181,7 @@ FT_SFX_CH0			= FT_SFX_STRUCT_SIZE*0
 FT_SFX_CH1			= FT_SFX_STRUCT_SIZE*1
 FT_SFX_CH2			= FT_SFX_STRUCT_SIZE*2
 FT_SFX_CH3			= FT_SFX_STRUCT_SIZE*3
+SIZE_FT_SFX = FT_SFX_STRUCT_SIZE*FT_SFX_STREAMS
 
 
 ;aliases for the APU registers
@@ -273,6 +235,44 @@ FT_MR_NOISE_V		= FT_OUT_BUF+9
 FT_MR_NOISE_F		= FT_OUT_BUF+10
 ;	.endif
 
+FT_EXTRA = FT_SFX_BASE_ADR+SIZE_FT_SFX
+volume_Sq1 = FT_EXTRA
+volume_Sq2 = FT_EXTRA+1	
+volume_Nz = FT_EXTRA+2	
+vol_change = FT_EXTRA+3	
+multiple1 = FT_EXTRA+4	
+
+vibrato_depth1 = FT_EXTRA+5 ;zero = off
+vibrato_depth2 = FT_EXTRA+6
+vibrato_depth3 = FT_EXTRA+7
+vibrato_count = FT_EXTRA+8 ;goes up every frame, shared by all
+
+slide_mode1 = FT_EXTRA+9 ;0 = off, 1 = up, 2 = down, 3 = portamento, 4 q/r
+slide_mode2 = FT_EXTRA+10
+slide_mode3 = FT_EXTRA+11
+slide_speed1 = FT_EXTRA+12 ;how much each frame, zero = off
+slide_speed2 = FT_EXTRA+13
+slide_speed3 = FT_EXTRA+14
+slide_count_low1 = FT_EXTRA+15 ;how much to add / subtract from low byte - cumulative
+slide_count_low2 = FT_EXTRA+16
+slide_count_low3 = FT_EXTRA+17
+slide_count_high1 = FT_EXTRA+18 ; how much to add / subtract from high byte
+slide_count_high2 = FT_EXTRA+19
+slide_count_high3 = FT_EXTRA+20
+
+temp_low = FT_EXTRA+21 ;low byte of frequency ***
+temp_high = FT_EXTRA+22
+channel = FT_EXTRA+23
+
+temp_duty = FT_EXTRA+24
+qr_flag = FT_EXTRA+25
+qr_offset = FT_EXTRA+26
+qr_rate = FT_EXTRA+27
+zero_flag1 = FT_EXTRA+28 ;for remembering if 100,200,300
+zero_flag2 = FT_EXTRA+29
+zero_flag3 = FT_EXTRA+30 ;31 new variables
+
+;see VAR_CHART to find the next safe to use RAM address
 
 
 ;------------------------------------------------------------------------------

@@ -1,0 +1,46 @@
+last FT variable / first safe to use address
+assuming a FT base address of $300
+
+famitone 2
+
+sfx = 0 = 37c / 37d
+sfx = 1 = 38b / 38c
+sfx = 2 = 39a / 39b
+sfx = 3 = 3a9 / 3aa
+sfx = 4 = 3b8 / 3b9
+
+185 max
+
+famitone 3
+
+sfx = 0 = 381 / 382
+sfx = 1 = 390 / 391
+sfx = 2 = 39f / 3a0
+sfx = 3 = 3ae / 3af
+sfx = 4 = 3bd / 3be
+
+190 max
+
+famitone 4
+
+sfx = 0 = 394 / 395
+sfx = 1 = 3a3 / 3a4
+sfx = 2 = 3b2 / 3b3
+sfx = 3 = 3c1 / 3c2
+sfx = 4 = 3d0 / 3d1
+
+209 max
+
+famitone 5
+
+sfx = 0 = 3aa / 3ab
+sfx = 1 = 3b9 / 3ba
+sfx = 2 = 3c8 / 3c9
+sfx = 3 = 3d7 / 3d8
+sfx = 4 = 3e6 / 3e7
+
+231 max
+
+
+
+

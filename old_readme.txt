@@ -179,7 +179,7 @@ User calls of the library:
   A is 0 or not 0, to play or pause music that is playing currently
 
  FamiToneSfxPlay
-  A is sound effect number 0..63, X is FT_SFX_CH0..FT_SFX_CH3 (no other
+  A is sound effect number 0..63, X is 0,15,30, or 45 (no other
   values are allowed!). The number in X is sound effect stream. It also
   works like priority. If you start a sound effect, it will stop any
   previous effect with the same priority. There is no automatic priority
