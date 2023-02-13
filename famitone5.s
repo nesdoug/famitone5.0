@@ -1,4 +1,4 @@
-;FamiTone5.2022.Mar.12
+;FamiTone5.2023.Feb
 ;fork of Famitone2 v1.15 by Shiru 04'17
 ;for ca65
 ;Revision 1-21-2021, Doug Fraker, to be used with text2vol5
@@ -8,6 +8,8 @@
 ;Pal support fixed, volume table exact now
 ;Nov 2021, fixed bug, disabling FT_SFX_ENABLE was broken
 ;2022.Mar.12 moved variables to be contiguous
+;2023.Feb fixed Qxx/Rxx without note on same line
+
 
 
 .export FamiToneInit, FamiToneMusicPlay, FamiToneUpdate
@@ -1485,7 +1487,9 @@ read_byte:
 	iny
 	jmp @qxx_read_again ;keep reading till we see a note or
 						;a row repeat
-	
+
+@qxx_not_note: ;add to note = destination
+	lda FT_CHN_NOTE,x	
 @qxx_note:	
 ;is note, use as current, add to note for destination
 	pha ;save note
@@ -1513,13 +1517,14 @@ read_byte:
 	ldx <FT_TEMP_VAR1
 	jmp read_byte ;if the next isn't a note, it's probably a repeat
 	
-@qxx_not_note: ;add to note = destination
-	lda FT_CHN_NOTE,x
-	clc
-	adc qr_offset
-	sta FT_CHN_NOTE,x	;NOTE, no range check
-	ldy #0
-	jmp read_byte
+;@qxx_not_note: ;add to note = destination
+;	lda FT_CHN_NOTE,x
+;	clc
+;	adc qr_offset
+;	sta FT_CHN_NOTE,x	;NOTE, no range check
+;	ldy #0
+;	jmp read_byte
+
 	
 @rxx_set:
 	jsr @QR_Common
@@ -1536,6 +1541,8 @@ read_byte:
 	jmp @rxx_read_again ;keep reading till we see a note or
 						;a row repeat
 	
+@rxx_not_note: ;add to note = destination
+	lda FT_CHN_NOTE,x
 @rxx_note:	
 ;is note, use as current, add to note for destination
 	pha ;save note
@@ -1543,13 +1550,14 @@ read_byte:
 	sbc qr_offset	;add note to offset
 	jmp @QR_Common2
 
-@rxx_not_note: ;add to note = destination
-	lda FT_CHN_NOTE,x
-	sec
-	sbc qr_offset
-	sta FT_CHN_NOTE,x	;NOTE, no range check
-	ldy #0
-	jmp read_byte
+;@rxx_not_note: ;add to note = destination
+;	lda FT_CHN_NOTE,x
+;	sec
+;	sbc qr_offset
+;	sta FT_CHN_NOTE,x	;NOTE, no range check
+;	ldy #0
+;	jmp read_byte
+
 	
 
 ; Qxy, speed = 2x+1	

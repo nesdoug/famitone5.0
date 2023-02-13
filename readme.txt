@@ -3,6 +3,8 @@ update - 3/11/2022
 -fixed a bug in text2vol5 (undefined behavior) 
  that might have caused incorrect output
 -in famitone asm, made variables contiguous 
+update - 2/2023
+-fixed Qxx/Rxx without note on same line
  
 
 famitone 5 (unofficial)
