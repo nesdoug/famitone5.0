@@ -17,7 +17,6 @@
 #include <conio.h>
 #include <memory.h>
 
-
 #define OUT_NESASM	0
 #define OUT_CA65	1
 #define OUT_ASM6	2
@@ -26,6 +25,10 @@ char DB[8];
 char DW[8];
 char LL[8];
 char LOW[8];
+
+char Macros[18] = "# Macros";
+char Instruments[20] = "# Instruments";
+char DPCM_samples[21] = "# DPCM samples";
 
 #define MIN_PATTERN_LEN		6
 #define MAX_REPEAT_CNT		60
@@ -518,7 +521,7 @@ void parse_instruments(void)
 
 	//parse envelopes
 
-	off = text_find_tag("# Macros", 0);
+	off = text_find_tag(Macros, 0);
 
 	if (off < 0) parse_error(off, "Macros section not found");
 
@@ -586,7 +589,7 @@ void parse_instruments(void)
 
 	for (i = 0; i < MAX_INSTRUMENTS; ++i) sample_list[i].id = -1;
 
-	off = text_find_tag("# Instruments", off);
+	off = text_find_tag(Instruments, off);
 
 	if (off < 0) parse_error(off, "Instruments section not found");
 
@@ -698,7 +701,7 @@ void parse_instruments(void)
 
 	ptr = 0;
 
-	off = text_find_tag("# DPCM samples", off);
+	off = text_find_tag(DPCM_samples, off);
 
 	while (off < text_size)
 	{
@@ -776,7 +779,7 @@ void parse_song(int subsong, bool header_only)
 
 	if (subsong >= subSongsCount) parse_error(0, "No sub song found");
 
-	off = text_find_tag("# Tracks", 0);
+	off = 0;
 
 	for (i = 0; i <= subsong; ++i) off = text_find_tag("TRACK", off);
 
@@ -1082,7 +1085,7 @@ void song_cleanup_instrument_numbers(void)
 				if (chn < 4)//pulse, triangle, and noise channels
 				{
 					if (ch->note < 1 && ch->instrument >= 0) ch->instrument = -1;//ignore instrument numbers at empty rows and rest notes
-																			   // ** changed from note < 2
+					// ** changed from note < 2
 
 					if (ch->instrument >= 0)
 					{
@@ -1710,11 +1713,11 @@ int output_song(int sub, int spdchn, bool test)
 
 					tptn.data[ptr++] = note - 1; // ** 0 rest note, 1..60 are octaves 1-5
 
-												 /*if (nrow)
-												 {
-												 ++srow;
-												 --ref_len;
-												 }*/
+					/*if (nrow)
+					{
+					++srow;
+					--ref_len;
+					}*/
 
 					continue;
 				}
@@ -1835,7 +1838,7 @@ void split_song(int factor)
 
 	if (cnt == song_original.order_length) factor = 1;//don't do split in this case, to make optimal split search faster
 
-													  //split patterns
+	//split patterns
 
 	memset(&song_split, 0, sizeof(song_split));
 
@@ -2036,10 +2039,19 @@ int main(int argc, char* argv[])
 	printf(", ");
 
 	if (!separate) printf("all songs in single file\n"); else printf("each song in a separate file\n");
-
+	bool newTextFormat = text_find_tag("# Module version", 0) >= 0;
+	if (newTextFormat)
+	{
+		// Dn-Ft 5 or higher, new text format
+		strcpy(Macros, "# SEQUENCES block");
+		strcpy(Instruments, "# INSTRUMENTS block");
+		strcpy(DPCM_samples, "# DPCM SAMPLES block");
+	}
 	if (text_find_tag("FamiTracker text export", 0) >= 0)
 	{
-		printf("Input format: FamiTracker export\n"); // ** removed #
+		printf("Input format: FamiTracker export"); // ** removed #
+		if (newTextFormat) printf(" (Module version +0450)");
+		printf("\n");
 
 		if (!separate)
 		{
@@ -2156,5 +2168,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-
-
